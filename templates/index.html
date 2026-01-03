@@ -1,43 +1,49 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Diabetes Prediction</title>
+    <title>Diabetes Prediction</title>
 </head>
 <body>
 
 <h2>Diabetes Prediction</h2>
 
-<input id="Pregnancies"><br><br>
-<input id="Glucose"><br><br>
-<input id="BloodPressure"><br><br>
-<input id="SkinThickness"><br><br>
-<input id="Insulin"><br><br>
-<input id="BMI"><br><br>
-<input id="DPF"><br><br>
-<input id="Age"><br><br>
+<input id="Pregnancies" placeholder="Pregnancies"><br><br>
+<input id="Glucose" placeholder="Glucose"><br><br>
+<input id="BloodPressure" placeholder="Blood Pressure"><br><br>
+<input id="SkinThickness" placeholder="Skin Thickness"><br><br>
+<input id="Insulin" placeholder="Insulin"><br><br>
+<input id="BMI" placeholder="BMI"><br><br>
+<input id="DPF" placeholder="Diabetes Pedigree Function"><br><br>
+<input id="Age" placeholder="Age"><br><br>
 
 <button onclick="predict()">Predict</button>
+
 <h3 id="result"></h3>
 
 <script>
 function predict() {
-  fetch("/predict", {
-    method: "POST",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({
-      Pregnancies: +Pregnancies.value,
-      Glucose: +Glucose.value,
-      BloodPressure: +BloodPressure.value,
-      SkinThickness: +SkinThickness.value,
-      Insulin: +Insulin.value,
-      BMI: +BMI.value,
-      DiabetesPedigreeFunction: +DPF.value,
-      Age: +Age.value
+    fetch("/predict", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            Pregnancies: +Pregnancies.value,
+            Glucose: +Glucose.value,
+            BloodPressure: +BloodPressure.value,
+            SkinThickness: +SkinThickness.value,
+            Insulin: +Insulin.value,
+            BMI: +BMI.value,
+            DiabetesPedigreeFunction: +DPF.value,
+            Age: +Age.value
+        })
     })
-  })
-  .then(r => r.json())
-  .then(d => result.innerText =
-    d.prediction === 1 ? "Diabetes Detected" : "No Diabetes");
+    .then(r => r.json())
+    .then(d => {
+        document.getElementById("result").innerText =
+            d.prediction === 1 ? "⚠️ Diabetes Detected" : "✅ No Diabetes";
+    })
+    .catch(() => {
+        document.getElementById("result").innerText = "Error calling API";
+    });
 }
 </script>
 
